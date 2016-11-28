@@ -9,11 +9,11 @@ namespace ConsoleApplication
   {
     public static void Main(string[] args)
     {
-      var targets = new []{ 
-        typeof(Data.Sample1),
-        typeof(Data.Sample2),
-      };
-      foreach(var t in targets) {
+      var cwd = Directory.GetCurrentDirectory();
+      var dir = new DirectoryInfo(Path.Combine(cwd, "Data"));
+      var files = dir.GetFiles();
+      foreach(var f in files) {
+        var t = Type.GetType("ConsoleApplication.Data."+Path.GetFileNameWithoutExtension(f.Name));
         MethodInfo method = typeof(Program).GetMethod("Test", BindingFlags.Static | BindingFlags.Public );
         method.MakeGenericMethod(t).Invoke(null, null);
       }
